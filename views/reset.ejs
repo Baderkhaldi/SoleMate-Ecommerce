@@ -1,0 +1,29 @@
+<% const title = 'Reset password - SoleMate'; %>
+<%- include('partials/header') %>
+
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h4 class="mb-3">Choose a new password</h4>
+        <% if (!ok) { %>
+          <div class="alert alert-danger"><%= error %></div>
+          <a href="/forgot" class="btn btn-outline-secondary w-100">Request a new link</a>
+        <% } else { %>
+          <% if (error) { %><div class="alert alert-danger"><%= error %></div><% } %>
+          <form method="POST" action="/reset">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="token" value="<%= token %>">
+            <div class="mb-3">
+              <label class="form-label">New password</label>
+              <input type="password" name="password" required minlength="8" class="form-control">
+            </div>
+            <button class="btn btn-primary w-100">Update password</button>
+          </form>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

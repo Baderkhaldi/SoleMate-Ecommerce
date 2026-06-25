@@ -1,0 +1,35 @@
+/* Basic style tweaks on top of Bootstrap */
+
+body {
+  background: #fafafa;
+}
+
+.carousel-img {
+  height: 380px;
+  object-fit: cover;
+  filter: brightness(0.85);
+}
+
+.product-card {
+  transition: transform .12s ease, box-shadow .12s ease;
+  border: 1px solid #eee;
+}
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 .35rem 1rem rgba(0,0,0,.08);
+}
+
+.product-thumb {
+  height: 180px;
+  object-fit: cover;
+}
+
+.cart-thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+footer a { text-decoration: none; }
+footer a:hover { text-decoration: underline; }

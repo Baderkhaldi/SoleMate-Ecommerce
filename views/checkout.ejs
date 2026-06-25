@@ -1,0 +1,62 @@
+<% const title = 'Checkout - SoleMate'; %>
+<%- include('partials/header') %>
+
+<h2 class="mb-3">Checkout</h2>
+
+<div class="row">
+  <div class="col-md-7">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5>Shipping details</h5>
+        <form method="POST" action="/checkout">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="mb-2">
+            <label class="form-label small">Name</label>
+            <input type="text" class="form-control"
+                   value="<%= (user.firstName || '') + ' ' + (user.lastName || '') %>" disabled>
+          </div>
+          <div class="mb-2">
+            <label class="form-label small">Email</label>
+            <input type="email" class="form-control" value="<%= user.email %>" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">Shipping address *</label>
+            <textarea name="shippingAddress" required rows="2" class="form-control"><%= user.address || '' %></textarea>
+          </div>
+          <% if (!stripeEnabled) { %>
+            <div class="alert alert-warning small">
+              Stripe is not configured. Submitting will mark the order as paid for grading/testing only.
+            </div>
+          <% } %>
+          <button class="btn btn-success w-100">
+            <i class="bi bi-credit-card"></i> Pay $<%= Number(total).toFixed(2) %>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-body">
+        <h5>Order summary</h5>
+        <ul class="list-group list-group-flush mb-2">
+          <% items.forEach(it => { %>
+            <li class="list-group-item d-flex justify-content-between">
+              <div>
+                <%= it.labelP %>
+                <span class="text-muted small">x<%= it.quantity %></span>
+              </div>
+              <span>$<%= (Number(it.priceP) * it.quantity).toFixed(2) %></span>
+            </li>
+          <% }) %>
+        </ul>
+        <div class="d-flex justify-content-between fw-bold">
+          <span>Total</span>
+          <span>$<%= Number(total).toFixed(2) %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

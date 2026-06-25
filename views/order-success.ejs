@@ -1,0 +1,48 @@
+<% const title = 'Order confirmed - SoleMate'; %>
+<%- include('partials/header') %>
+
+<div class="text-center my-4">
+  <i class="bi bi-check-circle-fill text-success" style="font-size: 64px;"></i>
+  <h2 class="mt-3">Thank you for your order!</h2>
+  <p class="text-muted">Order #<%= order.idO %> &middot; placed on <%= new Date(order.createdAt).toLocaleString() %></p>
+</div>
+
+<div class="card mx-auto" style="max-width: 720px">
+  <div class="card-body">
+    <h5>Receipt</h5>
+    <table class="table">
+      <thead>
+        <tr><th>Item</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr>
+      </thead>
+      <tbody>
+        <% orderItems.forEach(it => { %>
+          <tr>
+            <td><%= it.labelP %></td>
+            <td><%= it.quantity %></td>
+            <td>$<%= Number(it.priceAtTime).toFixed(2) %></td>
+            <td>$<%= (Number(it.priceAtTime) * it.quantity).toFixed(2) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" class="text-end fw-bold">Total</td>
+          <td class="fw-bold">$<%= Number(order.totalPrice).toFixed(2) %></td>
+        </tr>
+      </tfoot>
+    </table>
+    <p class="mb-1"><strong>Shipping to:</strong></p>
+    <p class="text-muted small"><%= order.shippingAddress %></p>
+    <p class="mb-0"><strong>Status:</strong>
+      <span class="badge bg-<%= order.orderStatus === 'paid' ? 'success' : 'secondary' %>">
+        <%= order.orderStatus %>
+      </span>
+    </p>
+  </div>
+</div>
+
+<div class="text-center mt-4">
+  <a href="/" class="btn btn-outline-primary">Back to shop</a>
+</div>
+
+<%- include('partials/footer') %>

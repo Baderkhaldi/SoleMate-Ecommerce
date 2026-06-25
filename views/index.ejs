@@ -1,0 +1,56 @@
+<% const title = 'SoleMate - Home'; %>
+<%- include('partials/header') %>
+
+<!-- Carousel of featured items -->
+<div id="featuredCarousel" class="carousel slide mb-4 rounded overflow-hidden shadow-sm" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <% featured.forEach((f, i) => { %>
+      <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="<%= i %>"
+        class="<%= i === 0 ? 'active' : '' %>"></button>
+    <% }) %>
+  </div>
+  <div class="carousel-inner">
+    <% featured.forEach((f, i) => { %>
+      <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+        <a href="/product?id=<%= f.idP %>">
+          <img src="<%= f.photoPath %>" class="d-block w-100 carousel-img" alt="<%= f.labelP %>">
+        </a>
+        <div class="carousel-caption d-none d-md-block">
+          <h3 class="fw-bold"><%= f.labelP %></h3>
+          <p>Step into something new.</p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<h2 class="mb-3">Shop the catalog</h2>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+  <% products.forEach(p => { %>
+    <div class="col">
+      <a href="/product?id=<%= p.idP %>" class="text-decoration-none text-dark">
+        <div class="card h-100 product-card">
+          <img src="<%= p.photoPath %>" class="card-img-top product-thumb" alt="<%= p.labelP %>">
+          <div class="card-body">
+            <h6 class="card-title mb-1"><%= p.labelP %></h6>
+            <p class="text-muted small mb-1"><%= p.category %></p>
+            <p class="fw-bold mb-0">$<%= Number(p.priceP).toFixed(2) %></p>
+          </div>
+        </div>
+      </a>
+    </div>
+  <% }) %>
+</div>
+
+<% if (products.length === 0) { %>
+  <p class="text-muted">No products available right now.</p>
+<% } %>
+
+<%- include('partials/footer') %>

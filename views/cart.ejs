@@ -1,0 +1,70 @@
+<% const title = 'Cart - SoleMate'; %>
+<%- include('partials/header') %>
+
+<h2 class="mb-3">Your shopping cart</h2>
+
+<% if (mustLogin) { %>
+  <div class="alert alert-warning">
+    You must <a href="/login?next=/cart">log in</a> to view your cart.
+  </div>
+<% } else if (items.length === 0) { %>
+  <p class="text-muted">Your cart is empty. <a href="/">Continue shopping</a>.</p>
+<% } else { %>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead class="table-light">
+        <tr>
+          <th></th>
+          <th>Product</th>
+          <th>Price</th>
+          <th style="width: 160px">Qty</th>
+          <th>Subtotal</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% items.forEach(it => { %>
+          <tr>
+            <td><img src="<%= it.photoPath %>" alt="" class="cart-thumb"></td>
+            <td><a href="/product?id=<%= it.idP %>" class="text-decoration-none text-dark"><%= it.labelP %></a></td>
+            <td>$<%= Number(it.priceP).toFixed(2) %></td>
+            <td>
+              <form method="POST" action="/update-cart" class="d-flex gap-1">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="idCart" value="<%= it.idCart %>">
+                <input type="number" name="quantity" min="1" max="10" value="<%= it.quantity %>"
+                       class="form-control form-control-sm">
+                <button class="btn btn-sm btn-outline-secondary">Update</button>
+              </form>
+            </td>
+            <td>$<%= (Number(it.priceP) * it.quantity).toFixed(2) %></td>
+            <td>
+              <form method="POST" action="/remove-from-cart">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="idCart" value="<%= it.idCart %>">
+                <button class="btn btn-sm btn-outline-danger" title="Remove">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="text-end fw-bold">Total</td>
+          <td class="fw-bold">$<%= Number(total).toFixed(2) %></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div class="d-flex justify-content-between">
+    <a href="/" class="btn btn-outline-secondary">Continue shopping</a>
+    <a href="/checkout" class="btn btn-success">
+      Checkout <i class="bi bi-arrow-right"></i>
+    </a>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>
